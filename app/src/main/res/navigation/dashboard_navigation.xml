@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dashboard_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.memeusix.clipbuddy.ui.dashboard.home.HomeFragment"
+        android:label="Clip Buddy"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.memeusix.clipbuddy.ui.dashboard.videos.VideoFragment"
+        android:label="{label}"
+        tools:layout="@layout/fragment_video">
+        <argument
+            android:name="label"
+            app:argType="string"
+            app:nullable="false"/>
+        <argument
+            android:name="folderDetails"
+            app:argType="com.memeusix.clipbuddy.data.model.FolderModel"
+            app:nullable="false" />
+
+    </fragment>
+</navigation>

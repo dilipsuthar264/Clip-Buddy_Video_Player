@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
+    <color name="errorRed">#FB3030</color>
+
+
+    <color name="colorBackground">#222831</color>
+    <color name="colorBackgroundSecondary">#31363F</color>
+    <color name="colorBackgroundSecondaryLight">#B331363F</color>
+    <color name="colorPrimaryText">#F8F8F8</color>
+    <color name="colorSecondaryText">#D7D7D7</color>
+    <color name="colorAccent">#16423C</color>
+    <color name="transparent_white_300">#4DFFFFFF</color>
+
+
+    <!--    <color name="colorBackground">#1B1D22</color>-->
+<!--    <color name="colorPrimaryText">#FFFFFF</color>-->
+<!--    <color name="colorSecondaryText">#9E9E9E</color> -->
+<!--    <color name="colorAccent">#AD870B</color>-->
+<!--&lt;!&ndash;    <color name="colorAccent">#00FF84</color>       &ndash;&gt;-->
+<!--    <color name="colorButton">#424242</color>     -->
+
+
+
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Clip Buddy</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="folder_name">Folder Name</string>
+    <string name="_4_video">4 video</string>
+    <string name="primission_not_granted">Primission Not Granted</string>
+    <string name="the_clip_buddy_app_required_permission_to_access_and_play_videos_nwithout_it_this_app_wont_works">the Clip Buddy App required permission to access and play videos.\nwithout it this app wont works</string>
+    <string name="give_permission">Give Permission</string>
+    <string name="we_are_unable_to_find_any_videos_on_your_mobile_phone">we are unable to find any videos on your mobile phone</string>
+    <string name="ooops_no_videos_found">Ooops! No Videos Found</string>
+    <string name="videos">%1$s videos</string>
+    <string name="menu">menu</string>
+    <string name="play">play</string>
+    <string name="previous_btn">previous btn</string>
+    <string name="play_pause_btn">play pause btn</string>
+    <string name="next_btn">next btn</string>
+    <string name="forward_btn">forward btn</string>
+    <string name="resize_btn">Resize btn</string>
+    <string name="_0_00">0:00</string>
+    <string name="_info_sec">%1$s %2$s</string>
+</resources>
