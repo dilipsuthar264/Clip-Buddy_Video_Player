@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/layoutTrack"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -50,16 +50,28 @@
                 android:textSize="18sp" />
         </LinearLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/exo_bottom_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
         <!-- Horizontal layout for subtitle and audio buttons -->
         <LinearLayout
             android:id="@+id/layoutTrack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toTopOf="@id/lytTimeBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutVideoTitle">
+            app:layout_constraintTop_toTopOf="parent">
 
             <!-- Subtitle Button -->
             <ImageButton
@@ -68,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:contentDescription="@null"
-                android:padding="5dp"
+                android:padding="8dp"
                 android:src="@drawable/media3_icon_subtitles" />
 
             <!-- Audio Button -->
@@ -78,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:contentDescription="@null"
-                android:padding="5dp"
+                android:padding="8dp"
                 android:src="@drawable/media_session_service_notification_ic_music_note" />
             <View
                 android:layout_width="0dp"
@@ -89,7 +101,7 @@
                 android:id="@+id/btnOrientation"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingHorizontal="6dp"
+                android:paddingHorizontal="10dp"
                 android:background="@android:color/transparent"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
@@ -102,22 +114,10 @@
                 android:background="@android:color/transparent"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
-                android:padding="5dp"
+                android:padding="8dp"
                 android:src="@drawable/ic_fit_screen" />
 
         </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/exo_bottom_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
 
         <LinearLayout
             android:id="@+id/lytTimeBar"
@@ -129,7 +129,7 @@
             app:layout_constraintBottom_toTopOf="@id/lytBtns"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/layoutTrack">
 
             <TextView
                 android:id="@+id/exo_position"
