@@ -2,15 +2,23 @@ package com.memeusix.clipbuddy.ui.videoPlayer
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
+import android.graphics.Color
+import android.graphics.Typeface
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.SurfaceView
 import android.view.View
+import android.view.ViewGroup.LayoutParams
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -23,23 +31,31 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.CaptionStyleCompat
 import androidx.media3.ui.DefaultTimeBar
-import androidx.media3.ui.PlayerView.ControllerVisibilityListener
+import androidx.media3.ui.PlayerView
+import androidx.navigation.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.memeusix.clipbuddy.R
 import com.memeusix.clipbuddy.base.BaseActivity
 import com.memeusix.clipbuddy.data.model.VideoModel
 import com.memeusix.clipbuddy.databinding.ActivityVideoPlayerBinding
 import com.memeusix.clipbuddy.ui.videoPlayer.dialog.AudioTrackDialog
+import com.memeusix.clipbuddy.ui.videoPlayer.viewModel.PlayerViewModel
+import com.memeusix.clipbuddy.ui.videoPlayer.viewModel.VideoZoom
 import com.memeusix.clipbuddy.utils.FilePathUtils
 import com.memeusix.clipbuddy.utils.formatDuration
 import com.memeusix.clipbuddy.utils.gone
+import com.memeusix.clipbuddy.utils.next
 import com.memeusix.clipbuddy.utils.parcelize
+import com.memeusix.clipbuddy.utils.toggleSystemBars
 import com.memeusix.clipbuddy.utils.visible
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.abs
+
 
 @UnstableApi
 class VideoPlayerActivity : BaseActivity() {
@@ -47,6 +63,7 @@ class VideoPlayerActivity : BaseActivity() {
     private lateinit var player: ExoPlayer
     private lateinit var gestureDetector: GestureDetector
     private lateinit var trackSelector: DefaultTrackSelector
+    private val viewModel by viewModels<PlayerViewModel>()
 
     /**
      *  Coroutine job
@@ -64,6 +81,10 @@ class VideoPlayerActivity : BaseActivity() {
     private lateinit var forwardBtn: ImageButton
     private lateinit var nextBtn: ImageButton
     private lateinit var videoTitle: TextView
+    private lateinit var resizeBtn: ImageButton
+    private lateinit var audioTrackBtn: ImageButton
+    private lateinit var subtitleTrackBtn: ImageButton
+    private lateinit var screenRotationBtn: ImageButton
 
     /**
      * Fast-forward and rewind intervals (in milliseconds)
@@ -88,19 +109,13 @@ class VideoPlayerActivity : BaseActivity() {
     /**
      * video parameters
      */
-    private var playWhenReady = true
-    private var videoUri: String? = null
-    private var currentPlaybackPosition: Long = 0
-    private var selectedAudioTrack: Tracks.Group? = null
-    private var selectedSubTitle : Tracks.Group? = null
-
+    private var video : VideoModel? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVideoPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         /**
          * Views initialization
@@ -113,23 +128,14 @@ class VideoPlayerActivity : BaseActivity() {
         playPauseBtn = findViewById(R.id.exo_play_pause)
         forwardBtn = findViewById(R.id.exo_ffwd)
         prevBtn = findViewById(R.id.exo_prev)
+        resizeBtn = findViewById(R.id.btnResize)
+        audioTrackBtn = findViewById(R.id.btnAudio)
+        subtitleTrackBtn = findViewById(R.id.btnSubTitle)
+        screenRotationBtn = findViewById(R.id.btnOrientation)
+
 
         videoTitle = findViewById(R.id.txtVideoName)
 
-
-        /**
-         * hiding system ui
-         */
-        FilePathUtils.hideSystemUI(window)
-        binding.playerView.setControllerVisibilityListener(ControllerVisibilityListener { visibility ->
-            if (visibility == View.VISIBLE) {
-                // Show system UI (status bar and nav bar)
-                FilePathUtils.showSystemUI(window)
-            } else {
-                // Hide system UI (status bar and nav bar)
-                FilePathUtils.hideSystemUI(window)
-            }
-        })
 
         /**
          * Initialize audio manager for controlling volume
@@ -152,17 +158,21 @@ class VideoPlayerActivity : BaseActivity() {
         }
 
         /**
-         * keep the screen on while playing
+         * setting Screen size
          */
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        FilePathUtils.hideSystemUI(window)
+
+
 
         val args = intent.extras
         args?.let {
-            val video = it.parcelize<VideoModel>("VIDEO_DETAILS")
-            videoUri = video?.path
+            video = it.parcelize<VideoModel>("VIDEO_DETAILS")
+            viewModel.videoUri = video?.path
             videoTitle.text = video?.name
         }
+
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -185,14 +195,15 @@ class VideoPlayerActivity : BaseActivity() {
 
         player.addListener(playbackListener)
 
+
         // Initialize player with media item
-        if (videoUri != null) {
-            val mediaItem = MediaItem.fromUri(Uri.parse(videoUri))
+        if (viewModel.videoUri != null) {
+            val mediaItem = MediaItem.fromUri(Uri.parse(viewModel.videoUri))
             player.setMediaItem(mediaItem)
-            player.playWhenReady = playWhenReady
+            player.playWhenReady = viewModel.playWhenReady
             player.prepare()
         }
-        player.seekTo(currentPlaybackPosition)
+        player.seekTo(viewModel.currentPlaybackPosition)
     }
 
     private val playbackListener = object : Player.Listener {
@@ -205,6 +216,12 @@ class VideoPlayerActivity : BaseActivity() {
             }
         }
 
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+            binding.playerView.keepScreenOn = isPlaying
+            super.onIsPlayingChanged(isPlaying)
+        }
+
+
         override fun onPositionDiscontinuity(
             oldPosition: Player.PositionInfo,
             newPosition: Player.PositionInfo,
@@ -215,7 +232,7 @@ class VideoPlayerActivity : BaseActivity() {
 
         override fun onTracksChanged(tracks: Tracks) {
             super.onTracksChanged(tracks)
-            selectedAudioTrack?.let { switchTrack(it, C.TRACK_TYPE_AUDIO) }
+            viewModel.selectedAudioTrack?.let { switchTrack(it, C.TRACK_TYPE_AUDIO) }
         }
 
         override fun onPlayerError(error: PlaybackException) {
@@ -243,6 +260,31 @@ class VideoPlayerActivity : BaseActivity() {
         binding.playerView.player = player
         binding.playerView.setControllerAnimationEnabled(false)
 
+        binding.playerView.subtitleView.apply {
+            val userStyle = CaptionStyleCompat(
+                Color.WHITE,
+                Color.TRANSPARENT,
+                Color.TRANSPARENT,
+                CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW,
+                Color.BLACK,
+                Typeface.create(
+                    Typeface.DEFAULT,
+                    Typeface.NORMAL
+                ),
+            )
+            this?.setStyle(userStyle)
+        }
+
+        binding.playerView.setControllerVisibilityListener(PlayerView.ControllerVisibilityListener { visibility ->
+            if (visibility == View.VISIBLE) {
+                // Show system UI (status bar and nav bar)
+                FilePathUtils.showSystemUI(window)
+            } else {
+                // Hide system UI (status bar and nav bar)
+                FilePathUtils.hideSystemUI(window)
+            }
+        })
+
         forwardBtn.setOnClickListener {
             forwardWithValue()
         }
@@ -251,40 +293,78 @@ class VideoPlayerActivity : BaseActivity() {
             rewindWithValues()
         }
 
-        videoTitle.setOnClickListener {
+
+        screenRotationBtn.setOnClickListener {
+            requestedOrientation = when (resources.configuration.orientation) {
+                Configuration.ORIENTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+                else -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            }
+        }
+        resizeBtn.setOnClickListener {
+            val viewZoom = viewModel.videoZoomMode.next()
+            setVideoZoom(viewZoom)
+        }
+
+        backBtn.setOnClickListener {
+            finish()
+        }
+        subtitleTrackBtn.setOnClickListener {
             val availableTracks: List<Tracks.Group> =
                 player.currentTracks.groups.filter { it.type == C.TRACK_TYPE_TEXT }
             AudioTrackDialog(
                 context = this,
-                type = "",
                 title = "Subtitles",
                 list = availableTracks,
                 selectedItem = availableTracks.find { it.isSelected }?.mediaTrackGroup?.id,
                 onItemSelected = { selectedSubtitle ->
-                    selectedSubTitle = selectedSubtitle
+                    viewModel.selectedSubTitle = selectedSubtitle
                     switchTrack(selectedSubtitle, C.TRACK_TYPE_TEXT)
                 }
             )
         }
 
-        backBtn.setOnClickListener {
+        audioTrackBtn.setOnClickListener {
             val availableTracks: List<Tracks.Group> =
                 player.currentTracks.groups.filter { it.type == C.TRACK_TYPE_AUDIO }
             AudioTrackDialog(
                 context = this,
-                type = "",
                 title = "Audio Tracks",
                 list = availableTracks,
                 selectedItem = availableTracks.find { it.isSelected }?.mediaTrackGroup?.id,
                 onItemSelected = { selectedTracks ->
                     // Build the track selection parameters
                     if (selectedTracks != null) {
-                        selectedAudioTrack = selectedTracks
+                        viewModel.selectedAudioTrack = selectedTracks
                         switchTrack(selectedTracks, C.TRACK_TYPE_AUDIO)
                     }
                 }
             )
         }
+    }
+
+    private fun setVideoZoom(viewZoom: VideoZoom) {
+        viewModel.videoZoomMode = viewZoom
+        when (viewZoom) {
+            VideoZoom.BEST_FIT -> {
+                binding.playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                resizeBtn.setImageDrawable(getDrawable(R.drawable.ic_fit_screen))
+                binding.infoText.text = getString(R.string.best_fit)
+            }
+
+            VideoZoom.STRETCH -> {
+                binding.playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+                resizeBtn.setImageDrawable(getDrawable(R.drawable.ic_aspect_ratio))
+                binding.infoText.text = getString(R.string.stretch)
+            }
+
+            VideoZoom.CROP -> {
+                binding.playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                resizeBtn.setImageDrawable(getDrawable(R.drawable.ic_crop_landscape))
+                binding.infoText.text = getString(R.string.crop)
+            }
+        }
+        binding.infoSubtext.text = ""
+        showGestureLayout(binding.infoLayout)
     }
 
     private fun switchTrack(selectedTracks: Tracks.Group?, type: Int) {
@@ -334,10 +414,11 @@ class VideoPlayerActivity : BaseActivity() {
 
 
     override fun onStop() {
-        currentPlaybackPosition = player.currentPosition
-        selectedAudioTrack =
+        viewModel.currentPlaybackPosition = player.currentPosition
+        viewModel.selectedAudioTrack =
             player.currentTracks.groups.find { it.isSelected && it.type == C.TRACK_TYPE_AUDIO }
-        playWhenReady = player.playWhenReady
+        viewModel.playWhenReady = player.playWhenReady
+        viewModel.currentOrientation = requestedOrientation
         hideJob?.cancel()
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         player.removeListener(playbackListener)
@@ -345,11 +426,17 @@ class VideoPlayerActivity : BaseActivity() {
         super.onStop()
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         player.release()
         hideJob?.cancel()
         player.removeListener(playbackListener)
+    }
+
+    override fun finish() {
+        super.finish()
+        viewModel.reset()
     }
 
 

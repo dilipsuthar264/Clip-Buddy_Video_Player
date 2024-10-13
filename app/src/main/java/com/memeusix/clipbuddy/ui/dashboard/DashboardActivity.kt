@@ -1,6 +1,7 @@
 package com.memeusix.clipbuddy.ui.dashboard
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -19,7 +20,6 @@ class DashboardActivity : BaseActivity() {
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
         navcontroller = findNavController(R.id.navHost)
-
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.homeFragment

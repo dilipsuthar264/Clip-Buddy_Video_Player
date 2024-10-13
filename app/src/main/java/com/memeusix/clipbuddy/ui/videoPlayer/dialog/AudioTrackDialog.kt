@@ -15,7 +15,6 @@ class AudioTrackDialog(
     val context: Context,
     val selectedItem: String?,
     val list: List<Tracks.Group>,
-    val type: String,
     val title: String,
     val onItemSelected: (Tracks.Group?) -> Unit // Callback for selected item
 ) {

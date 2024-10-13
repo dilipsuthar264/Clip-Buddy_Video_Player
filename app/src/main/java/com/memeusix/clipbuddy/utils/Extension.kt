@@ -11,10 +11,14 @@ import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat.Type
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.media3.common.C
 import androidx.media3.common.TrackGroup
 import androidx.media3.common.util.UnstableApi
 import com.memeusix.clipbuddy.R
+import com.memeusix.clipbuddy.ui.videoPlayer.viewModel.VideoZoom
 import java.io.Serializable
 import java.util.Locale
 
@@ -103,4 +107,17 @@ fun TrackGroup.getName(trackType: @C.TrackType Int, index: Int): String {
             append(Locale(language).displayLanguage)
         }
     }
+}
+
+fun Activity.toggleSystemBars(showBars: Boolean, @Type.InsetsType types: Int = Type.systemBars()) {
+    WindowCompat.getInsetsController(window, window.decorView).apply {
+        systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        if (showBars) show(types) else hide(types)
+    }
+}
+
+fun VideoZoom.next() : VideoZoom{
+    val values = VideoZoom.entries.toTypedArray()
+    val nextIndex = (this.ordinal + 1) % values.size
+    return values[nextIndex]
 }
