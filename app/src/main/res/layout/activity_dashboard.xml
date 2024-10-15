@@ -17,6 +17,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/app_name"
         app:titleCentered="false"
+        app:subtitle=" version: 1.0"
+        app:subtitleTextAppearance="@style/textSmallLight"
+        app:subtitleTextColor="@color/colorSecondaryText"
         app:titleTextAppearance="@style/textSemiBold"
         app:titleTextColor="@color/colorPrimaryText" />
 
