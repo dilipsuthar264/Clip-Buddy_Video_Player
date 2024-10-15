@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep all classes that implement Parcelable
+-keep class ** implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+
+# Keep all @Parcelize annotated classes
+-keep @kotlinx.parcelize.Parcelize class * {
+    *;
+}
