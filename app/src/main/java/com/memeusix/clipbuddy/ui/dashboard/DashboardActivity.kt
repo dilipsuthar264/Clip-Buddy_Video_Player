@@ -25,7 +25,29 @@ class DashboardActivity : AppCompatActivity() {
             )
         )
         NavigationUI.setupWithNavController(binding.toolBar, navcontroller, appBarConfiguration)
+        navcontroller.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.homeFragment -> {
+                    binding.toolBar.subtitle = getAppVersion()
+
+                }
+
+                R.id.videoFragment -> {
+                    binding.toolBar.subtitle = null
+                }
+
+                else -> {
+
+                }
+            }
+        }
     }
+
+    private fun getAppVersion(): String {
+        val version = packageManager.getPackageInfo(packageName, 0).versionName
+        return " $version"
+    }
+
 
     companion object {
         val TAG = DashboardActivity::class.java.name
