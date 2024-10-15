@@ -5,23 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:configChanges="orientation|screenSize"
     tools:context=".ui.videoPlayer.VideoPlayerActivity">
 
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@android:color/black"
-        app:controller_layout_id="@layout/player_controller_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:resize_mode="fit"
-        app:use_controller="true" />
+       />
 
     <LinearLayout
         android:id="@+id/info_layout"

@@ -11,4 +11,6 @@ data class VideoModel(
     val path: String? = null,
     val duration: Long? = null,
     val size: Long? = null,
+    val dimensions : String? = null,
+    val time : Long? = null
 ) : Parcelable

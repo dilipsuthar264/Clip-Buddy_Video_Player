@@ -16,6 +16,9 @@ class VideoRepository(private val context: Context) {
             MediaStore.Video.Media.SIZE,
             MediaStore.Video.Media.DATA,
             MediaStore.Video.Media.BUCKET_DISPLAY_NAME,
+            MediaStore.Video.Media.DATE_ADDED,
+            MediaStore.Video.Media.HEIGHT,
+            MediaStore.Video.Media.WIDTH
         )
 
         val cursor = context.contentResolver.query(
@@ -30,6 +33,9 @@ class VideoRepository(private val context: Context) {
             val pathIndex = it.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
             val durationIndex = it.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
             val sizeIndex = it.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
+            val dateAddedIndex = it.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)
+            val heightIndex = it.getColumnIndexOrThrow(MediaStore.Video.Media.HEIGHT)
+            val widthIndex = it.getColumnIndexOrThrow(MediaStore.Video.Media.WIDTH)
 
             while (it.moveToNext()) {
                 val id = it.getLong(idIndex)
@@ -38,7 +44,19 @@ class VideoRepository(private val context: Context) {
                 val path = it.getString(pathIndex)
                 val duration = it.getLong(durationIndex)
                 val size = it.getLong(sizeIndex)
-                val video = VideoModel(id, name, folder, path, duration, size)
+                val dateAdded = it.getLong(dateAddedIndex)
+                val height = it.getInt(heightIndex)
+                val width = it.getInt(widthIndex)
+                val video = VideoModel(
+                    id,
+                    name,
+                    folder,
+                    path,
+                    duration,
+                    size,
+                    "$height X $width",
+                    dateAdded
+                )
                 videoMap.getOrPut(folder) { mutableListOf() }.add(video)
             }
         }

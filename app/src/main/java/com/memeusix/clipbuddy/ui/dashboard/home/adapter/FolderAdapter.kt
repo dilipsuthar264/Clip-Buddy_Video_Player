@@ -1,6 +1,5 @@
 package com.memeusix.clipbuddy.ui.dashboard.home.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -17,7 +16,6 @@ class FolderAdapter(
 
     inner class FolderViewHolder(private val binding: ItemFolderBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        @SuppressLint("StringFormatMatches")
         fun bind(item: FolderModel) {
             binding.txtFolderName.text = item.folderName
             binding.txtVideoCount.text =
