@@ -84,7 +84,12 @@ open class NextRenderersFactory(context: Context) : DefaultRenderersFactory(cont
         }
 
         try {
-            val renderer = FfmpegVideoRenderer(allowedVideoJoiningTimeMs, eventHandler, eventListener, MAX_DROPPED_VIDEO_FRAME_COUNT_TO_NOTIFY)
+            val renderer = FfmpegVideoRenderer(
+                allowedVideoJoiningTimeMs,
+                eventHandler,
+                eventListener,
+                MAX_DROPPED_VIDEO_FRAME_COUNT_TO_NOTIFY
+            )
             out.add(extensionRendererIndex++, renderer)
             Log.i(TAG, "Loaded FfmpegVideoRenderer.")
         } catch (e: java.lang.Exception) {
@@ -94,6 +99,6 @@ open class NextRenderersFactory(context: Context) : DefaultRenderersFactory(cont
     }
 
     companion object {
-        const val TAG = "NextRenderersFactory"
+        val TAG = NextRenderersFactory::class.java.name
     }
 }

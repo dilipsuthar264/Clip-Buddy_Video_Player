@@ -11,14 +11,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
-import android.view.SurfaceView
 import android.view.View
-import android.view.ViewGroup.LayoutParams
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModel
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -35,21 +33,19 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.CaptionStyleCompat
 import androidx.media3.ui.DefaultTimeBar
 import androidx.media3.ui.PlayerView
-import androidx.navigation.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.memeusix.clipbuddy.R
-import com.memeusix.clipbuddy.base.BaseActivity
 import com.memeusix.clipbuddy.data.model.VideoModel
 import com.memeusix.clipbuddy.databinding.ActivityVideoPlayerBinding
 import com.memeusix.clipbuddy.ui.videoPlayer.dialog.AudioTrackDialog
 import com.memeusix.clipbuddy.ui.videoPlayer.viewModel.PlayerViewModel
 import com.memeusix.clipbuddy.ui.videoPlayer.viewModel.VideoZoom
-import com.memeusix.clipbuddy.utils.FilePathUtils
 import com.memeusix.clipbuddy.utils.formatDuration
 import com.memeusix.clipbuddy.utils.gone
+import com.memeusix.clipbuddy.utils.hideSystemUI
 import com.memeusix.clipbuddy.utils.next
 import com.memeusix.clipbuddy.utils.parcelize
-import com.memeusix.clipbuddy.utils.toggleSystemBars
+import com.memeusix.clipbuddy.utils.showSystemUI
 import com.memeusix.clipbuddy.utils.visible
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -58,7 +54,7 @@ import kotlin.math.abs
 
 
 @UnstableApi
-class VideoPlayerActivity : BaseActivity() {
+class VideoPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityVideoPlayerBinding
     private lateinit var player: ExoPlayer
     private lateinit var gestureDetector: GestureDetector
@@ -109,7 +105,7 @@ class VideoPlayerActivity : BaseActivity() {
     /**
      * video parameters
      */
-    private var video : VideoModel? = null
+    private var video: VideoModel? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -160,8 +156,7 @@ class VideoPlayerActivity : BaseActivity() {
         /**
          * setting Screen size
          */
-        FilePathUtils.hideSystemUI(window)
-
+        hideSystemUI(window)
 
 
         val args = intent.extras
@@ -278,10 +273,10 @@ class VideoPlayerActivity : BaseActivity() {
         binding.playerView.setControllerVisibilityListener(PlayerView.ControllerVisibilityListener { visibility ->
             if (visibility == View.VISIBLE) {
                 // Show system UI (status bar and nav bar)
-                FilePathUtils.showSystemUI(window)
+                showSystemUI(window)
             } else {
                 // Hide system UI (status bar and nav bar)
-                FilePathUtils.hideSystemUI(window)
+                hideSystemUI(window)
             }
         })
 
@@ -320,7 +315,7 @@ class VideoPlayerActivity : BaseActivity() {
                     viewModel.selectedSubTitle = selectedSubtitle
                     switchTrack(selectedSubtitle, C.TRACK_TYPE_TEXT)
                 }
-            )
+            ).show()
         }
 
         audioTrackBtn.setOnClickListener {
@@ -332,13 +327,10 @@ class VideoPlayerActivity : BaseActivity() {
                 list = availableTracks,
                 selectedItem = availableTracks.find { it.isSelected }?.mediaTrackGroup?.id,
                 onItemSelected = { selectedTracks ->
-                    // Build the track selection parameters
-                    if (selectedTracks != null) {
-                        viewModel.selectedAudioTrack = selectedTracks
-                        switchTrack(selectedTracks, C.TRACK_TYPE_AUDIO)
-                    }
+                    viewModel.selectedAudioTrack = selectedTracks
+                    switchTrack(selectedTracks, C.TRACK_TYPE_AUDIO)
                 }
-            )
+            ).show()
         }
     }
 

@@ -27,6 +27,21 @@
             android:name="folderDetails"
             app:argType="com.memeusix.clipbuddy.data.model.FolderModel"
             app:nullable="false" />
+        <action
+            android:id="@+id/action_videoFragment_to_videoOptionBottomSheetFragment"
+            app:destination="@id/videoOptionBottomSheetFragment" />
 
     </fragment>
+    <dialog
+        android:id="@+id/videoOptionBottomSheetFragment"
+        android:name="com.memeusix.clipbuddy.ui.dashboard.videoOptions.VideoOptionBottomSheetFragment"
+        android:label="fragment_video_option_bottom_sheet"
+        tools:layout="@layout/fragment_video_option_bottom_sheet">
+
+        <argument
+            android:name="videoDetails"
+            app:argType="com.memeusix.clipbuddy.data.model.VideoModel"
+            app:nullable="false"
+            />
+    </dialog>
 </navigation>

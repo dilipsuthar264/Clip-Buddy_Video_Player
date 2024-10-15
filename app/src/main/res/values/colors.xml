@@ -10,8 +10,9 @@
     <color name="colorBackground">#222831</color>
     <color name="colorBackgroundSecondary">#31363F</color>
     <color name="colorBackgroundSecondaryLight">#B331363F</color>
+    <color name="colorBackgroundSecondaryLightest">#7731363F</color>
     <color name="colorPrimaryText">#F8F8F8</color>
-    <color name="colorSecondaryText">#D7D7D7</color>
+    <color name="colorSecondaryText">#9E9E9E</color>
     <color name="colorAccent">#16423C</color>
     <color name="transparent_white_300">#4DFFFFFF</color>
 

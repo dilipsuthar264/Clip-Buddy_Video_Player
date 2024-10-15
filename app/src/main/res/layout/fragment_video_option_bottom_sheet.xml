@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_rounded_primary"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="20dp"
+    tools:context=".ui.dashboard.videoOptions.VideoOptionBottomSheetFragment">
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimaryText" />
+
+    <TextView
+        android:id="@+id/txtVideoName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:fontFamily="@font/be_vietnam_pro__semi_bold"
+        android:includeFontPadding="false"
+        android:text="Video Name"
+        android:textAlignment="center"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/txtRename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:drawablePadding="10dp"
+        android:fontFamily="@font/be_vietnam_pro__regular"
+        android:includeFontPadding="false"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="15dp"
+        android:text="@string/rename"
+
+        android:textSize="16sp"
+
+        app:drawableStartCompat="@drawable/ic_pen" />
+
+    <TextView
+        android:id="@+id/txtShare"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:drawablePadding="10dp"
+        android:fontFamily="@font/be_vietnam_pro__regular"
+        android:includeFontPadding="false"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="15dp"
+        android:text="@string/share"
+        android:textSize="16sp"
+
+        app:drawableStartCompat="@drawable/ic_share" />
+
+    <TextView
+        android:id="@+id/txtDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:drawablePadding="10dp"
+        android:fontFamily="@font/be_vietnam_pro__regular"
+        android:includeFontPadding="false"
+        android:paddingHorizontal="10dp"
+
+        android:paddingVertical="15dp"
+        android:text="@string/details"
+        android:textSize="16sp"
+
+        app:drawableStartCompat="@drawable/ic_info" />
+
+    <TextView
+        android:id="@+id/txtDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:drawablePadding="10dp"
+        android:fontFamily="@font/be_vietnam_pro__regular"
+        android:includeFontPadding="false"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="15dp"
+        android:text="@string/delete"
+        android:textSize="16sp"
+
+        app:drawableStartCompat="@drawable/ic_delete" />
+</LinearLayout>

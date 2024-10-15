@@ -9,7 +9,7 @@
     <string name="give_permission">Give Permission</string>
     <string name="we_are_unable_to_find_any_videos_on_your_mobile_phone">we are unable to find any videos on your mobile phone</string>
     <string name="ooops_no_videos_found">Ooops! No Videos Found</string>
-    <string name="videos">%1$s videos</string>
+    <string name="videos">%d videos</string>
     <string name="menu">menu</string>
     <string name="play">play</string>
     <string name="previous_btn">previous btn</string>
@@ -22,4 +22,21 @@
     <string name="crop">CROP</string>
     <string name="stretch">STRETCH</string>
     <string name="best_fit">BEST FIT</string>
+    <string name="rename">Rename</string>
+    <string name="share">Share</string>
+    <string name="details">Details</string>
+    <string name="delete">Delete</string>
+    <string name="enter_a_new_name">Enter a new Name</string>
+    <string name="rename_video">Rename Video</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_video">Delete Video</string>
+    <string name="disable">Disable</string>
+    <string name="name">Name</string>
+    <string name="time">Time</string>
+    <string name="duration">Duration</string>
+    <string name="dimensions">Dimensions</string>
+    <string name="size">Size</string>
+    <string name="path">Path</string>
+    <string name="pixels">%1$s Pixels</string>
 </resources>

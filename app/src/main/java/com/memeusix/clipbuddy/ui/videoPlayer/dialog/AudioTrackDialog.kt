@@ -1,57 +1,94 @@
 package com.memeusix.clipbuddy.ui.videoPlayer.dialog
 
-import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.view.Window
 import android.widget.TextView
 import androidx.annotation.OptIn
 import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
+import androidx.recyclerview.widget.RecyclerView
 import com.memeusix.clipbuddy.R
+import com.memeusix.clipbuddy.databinding.DialogTracksBinding
 
 class AudioTrackDialog(
     val context: Context,
     val selectedItem: String?,
     val list: List<Tracks.Group>,
     val title: String,
-    val onItemSelected: (Tracks.Group?) -> Unit // Callback for selected item
+    val onItemSelected: (Tracks.Group?) -> Unit
 ) {
 
-    private val builder = AlertDialog.Builder(context)
-    private val adapter =
-        object : ArrayAdapter<Tracks.Group>(context, android.R.layout.simple_list_item_1, list) {
-            @OptIn(UnstableApi::class)
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = super.getView(position, convertView, parent)
-                val textView = view.findViewById<TextView>(android.R.id.text1)
-                val group = getItem(position)
-                textView.text = group?.mediaTrackGroup?.getFormat(0)?.label ?: "None"
-                if (selectedItem == group?.mediaTrackGroup?.id) {
-                    view.setBackgroundColor(context.getColor(R.color.colorBackgroundSecondary))
-                } else {
-                    view.setBackgroundColor(0)
-                }
-                return view
-            }
+    private val dialog: Dialog = Dialog(context, android.R.style.Theme_DeviceDefault_Dialog_Alert)
+    private val binding: DialogTracksBinding =
+        DialogTracksBinding.inflate(LayoutInflater.from(context))
+
+    private val adapter = object : RecyclerView.Adapter<TrackViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(android.R.layout.simple_list_item_1, parent, false)
+            return TrackViewHolder(view.rootView)
         }
+
+        override fun getItemCount(): Int {
+            return list.size
+        }
+
+        override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
+            holder.bind(list[position])
+        }
+
+    }
 
     init {
-        builder.setTitle(title) // Set title using the provided title parameter
-        builder.setAdapter(adapter) { _, position ->
-            val selected = list[position]
-            onItemSelected(selected)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(binding.root)
+        dialog.setCancelable(true)
+        binding.rvTrack.adapter = adapter
+        binding.txtTitle.text = title
+
+        binding.btnCancel.setOnClickListener {
+            dismiss()
         }
-        builder.setNeutralButton("Disable"){_,_->
+        binding.btnDisable.setOnClickListener {
             onItemSelected(null)
+            dismiss()
         }
-        builder.setCancelable(true)
+    }
 
-        // Cancel button
-        builder.setNegativeButton("Cancel", null)
+    fun show() {
+        if (!dialog.isShowing) {
+            dialog.show()
+        }
+    }
 
-        // Show the dialog
-        builder.show()
+    fun dismiss() {
+        if (dialog.isShowing) dialog.dismiss()
+    }
+
+    inner class TrackViewHolder(private val bindingAdapter: View) :
+        RecyclerView.ViewHolder(bindingAdapter) {
+        @OptIn(UnstableApi::class)
+        fun bind(item: Tracks.Group) {
+            (bindingAdapter as TextView).apply {
+                this.includeFontPadding = false
+
+                this.text = item.mediaTrackGroup.getFormat(0).label
+
+                if (item.mediaTrackGroup.id == selectedItem) {
+                    this.setBackgroundColor(context.getColor(R.color.colorBackgroundSecondary))
+                } else {
+                    this.setBackgroundColor(context.getColor(android.R.color.transparent))
+                }
+
+                this.rootView.setOnClickListener {
+                    onItemSelected(item)
+                    dismiss()
+                }
+            }
+        }
     }
 }
