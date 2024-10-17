@@ -10,7 +10,6 @@
         android:layout_width="0dp"
         android:fitsSystemWindows="true"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
         android:background="@drawable/shape_gradiant_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,8 +18,9 @@
         <LinearLayout
             android:id="@+id/layoutVideoTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:paddingVertical="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +47,7 @@
                 android:fontFamily="@font/be_vietnam_pro__regular"
                 android:includeFontPadding="false"
                 android:maxLines="2"
+                android:textColor="@color/white"
                 android:text="@string/app_name"
                 android:textSize="18sp" />
         </LinearLayout>
