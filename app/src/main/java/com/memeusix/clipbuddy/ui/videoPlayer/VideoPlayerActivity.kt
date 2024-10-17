@@ -119,11 +119,9 @@ class VideoPlayerActivity : AppCompatActivity() {
         seekBar = findViewById(R.id.exo_progress)
         backBtn = findViewById(R.id.btnBackArrow)
 
-        nextBtn = findViewById(R.id.exo_next)
         reverseBtn = findViewById(R.id.exo_rew)
         playPauseBtn = findViewById(R.id.exo_play_pause)
         forwardBtn = findViewById(R.id.exo_ffwd)
-        prevBtn = findViewById(R.id.exo_prev)
         resizeBtn = findViewById(R.id.btnResize)
         audioTrackBtn = findViewById(R.id.btnAudio)
         subtitleTrackBtn = findViewById(R.id.btnSubTitle)

@@ -11,7 +11,7 @@
         android:fitsSystemWindows="true"
         android:layout_height="wrap_content"
         android:paddingVertical="10dp"
-        android:background="@color/colorBackgroundSecondaryLightest"
+        android:background="@drawable/shape_gradiant_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -58,67 +58,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
-        android:background="@color/colorBackgroundSecondaryLightest"
+        android:background="@drawable/shape_gradiant_background_reverse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Horizontal layout for subtitle and audio buttons -->
-        <LinearLayout
-            android:id="@+id/layoutTrack"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@id/lytTimeBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <!-- Subtitle Button -->
-            <ImageButton
-                android:id="@+id/btnSubTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:contentDescription="@null"
-                android:padding="8dp"
-                android:src="@drawable/media3_icon_subtitles" />
-
-            <!-- Audio Button -->
-            <ImageButton
-                android:id="@+id/btnAudio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:contentDescription="@null"
-                android:padding="8dp"
-                android:src="@drawable/media_session_service_notification_ic_music_note" />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-            <ImageButton
-                android:id="@+id/btnOrientation"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingHorizontal="10dp"
-                android:background="@android:color/transparent"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_screen_rotation" />
-
-            <ImageButton
-                android:id="@+id/btnResize"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@null"
-                android:padding="8dp"
-                android:src="@drawable/ic_fit_screen" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/lytTimeBar"
@@ -130,7 +74,7 @@
             app:layout_constraintBottom_toTopOf="@id/lytBtns"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutTrack">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/exo_position"
@@ -172,21 +116,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lytTimeBar">
 
+            <!-- Subtitle Button -->
             <ImageButton
-                android:id="@+id/exo_prev"
+                android:layout_marginHorizontal="3dp"
+                android:id="@+id/btnSubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="3dp"
                 android:background="@android:color/transparent"
-                android:contentDescription="@string/previous_btn" />
+                android:contentDescription="@null"
+                android:padding="8dp"
+                android:src="@drawable/media3_icon_subtitles" />
+
+            <!-- Audio Button -->
+            <ImageButton
+                android:layout_marginHorizontal="3dp"
+
+                android:id="@+id/btnAudio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:contentDescription="@null"
+                android:padding="8dp"
+                android:src="@drawable/media_session_service_notification_ic_music_note" />
+
 
             <ImageButton
+                android:layout_marginHorizontal="8dp"
+
                 android:id="@+id/exo_rew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="3dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/previous_btn" />
 
@@ -195,8 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="3dp"
-
+                android:layout_marginHorizontal="8dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/play_pause_btn" />
 
@@ -205,19 +164,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="8dp"
 
-                android:layout_marginHorizontal="3dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/forward_btn" />
 
             <ImageButton
-                android:id="@+id/exo_next"
+                android:id="@+id/btnOrientation"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="3dp"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="10dp"
                 android:background="@android:color/transparent"
-                android:contentDescription="@string/next_btn" />
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:layout_marginHorizontal="3dp"
+                android:src="@drawable/ic_screen_rotation" />
+
+            <ImageButton
+                android:id="@+id/btnResize"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:padding="8dp"
+                android:layout_marginHorizontal="3dp"
+                android:src="@drawable/ic_fit_screen" />
 
         </LinearLayout>
 
