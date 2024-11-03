@@ -15,22 +15,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-       />
+        app:layout_constraintTop_toTopOf="parent"/>
+
 
     <LinearLayout
         android:id="@+id/info_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="84dp"
         android:clickable="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:visibility="gone"
-        android:layout_marginBottom="84dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/info_text"
@@ -105,6 +105,7 @@
         android:id="@+id/brightness_gesture_layout"
         android:layout_width="54dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
         android:background="@color/colorBackground"
         android:clickable="false"
         android:gravity="center_horizontal"
@@ -112,7 +113,6 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView

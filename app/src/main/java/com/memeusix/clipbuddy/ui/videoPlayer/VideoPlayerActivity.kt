@@ -9,12 +9,15 @@ import android.graphics.Typeface
 import android.media.AudioManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -154,7 +157,11 @@ class VideoPlayerActivity : AppCompatActivity() {
         /**
          * setting Screen size
          */
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(Color.BLACK)
+        )
         hideSystemUI(window)
+//        window.setDecorFitsSystemWindows(false)
 
 
         val args = intent.extras
@@ -187,16 +194,15 @@ class VideoPlayerActivity : AppCompatActivity() {
             .build()
 
         player.addListener(playbackListener)
-
-
         // Initialize player with media item
         if (viewModel.videoUri != null) {
             val mediaItem = MediaItem.fromUri(Uri.parse(viewModel.videoUri))
             player.setMediaItem(mediaItem)
             player.playWhenReady = viewModel.playWhenReady
             player.prepare()
+            player.seekTo(viewModel.currentPlaybackPosition)
         }
-        player.seekTo(viewModel.currentPlaybackPosition)
+
     }
 
     private val playbackListener = object : Player.Listener {
@@ -207,7 +213,17 @@ class VideoPlayerActivity : AppCompatActivity() {
             } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             }
+
+            // check for landscape orientation
+//            player.videoSize.apply {
+//                if (width > height && firstTimeRender) {
+//                    rotateScreen()
+//                    firstTimeRender = false
+//                }
+//            }
+
         }
+
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             binding.playerView.keepScreenOn = isPlaying
@@ -240,6 +256,7 @@ class VideoPlayerActivity : AppCompatActivity() {
             alertDialog.show()
             super.onPlayerError(error)
         }
+
     }
 
     private fun getAudioAttributes(): AudioAttributes {
@@ -252,6 +269,8 @@ class VideoPlayerActivity : AppCompatActivity() {
     private fun initializePlayerView() {
         binding.playerView.player = player
         binding.playerView.setControllerAnimationEnabled(false)
+
+
 
         binding.playerView.subtitleView.apply {
             val userStyle = CaptionStyleCompat(
@@ -266,6 +285,7 @@ class VideoPlayerActivity : AppCompatActivity() {
                 ),
             )
             this?.setStyle(userStyle)
+            this?.setFixedTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
         }
 
         binding.playerView.setControllerVisibilityListener(PlayerView.ControllerVisibilityListener { visibility ->
@@ -287,11 +307,9 @@ class VideoPlayerActivity : AppCompatActivity() {
         }
 
 
+
         screenRotationBtn.setOnClickListener {
-            requestedOrientation = when (resources.configuration.orientation) {
-                Configuration.ORIENTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-                else -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-            }
+            rotateScreen()
         }
         resizeBtn.setOnClickListener {
             val viewZoom = viewModel.videoZoomMode.next()
@@ -329,6 +347,13 @@ class VideoPlayerActivity : AppCompatActivity() {
                     switchTrack(selectedTracks, C.TRACK_TYPE_AUDIO)
                 }
             ).show()
+        }
+    }
+
+    private fun rotateScreen() {
+        requestedOrientation = when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+            else -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
         }
     }
 
@@ -467,11 +492,11 @@ class VideoPlayerActivity : AppCompatActivity() {
                 val deltaY = e2.y.minus(initialEvent.y) ?: 0f
 
                 if (abs(deltaX) > abs(deltaY) && abs(deltaX) > SWIPE_THRESHOLD) {
-//                    if (deltaX > SWIPE_THRESHOLD) {
-//                        forwardVideo()
-//                    } else {
-//                        rewindVideo()
-//                    }
+                    if (deltaX > SWIPE_THRESHOLD) {
+                        forwardVideo()
+                    } else {
+                        rewindVideo()
+                    }
                 } else if (abs(deltaY) > SWIPE_THRESHOLD) {
                     if (initialEvent.x > binding.playerView.width / 2) {
                         adjustVolume(distanceY)

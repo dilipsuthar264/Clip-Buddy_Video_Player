@@ -1,5 +1,6 @@
 package com.memeusix.clipbuddy.ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -8,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.memeusix.clipbuddy.R
 import com.memeusix.clipbuddy.databinding.ActivityDashboardBinding
+import com.memeusix.clipbuddy.ui.sharing.SharingActivity
 
 class DashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding

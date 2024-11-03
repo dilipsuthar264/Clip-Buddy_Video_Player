@@ -33,7 +33,7 @@ fun hideSystemUI(window: Window) {
 // Method to show the system UI (status bar and navigation bar)
 fun showSystemUI(window: Window) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-        window.setDecorFitsSystemWindows(true)
+        window.setDecorFitsSystemWindows(false)
         window.insetsController?.show(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
     } else {
         @Suppress("DEPRECATION")
