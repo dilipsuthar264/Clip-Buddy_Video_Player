@@ -1,6 +1,5 @@
 package com.memeusix.clipbuddy.ui.dashboard
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -9,25 +8,24 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.memeusix.clipbuddy.R
 import com.memeusix.clipbuddy.databinding.ActivityDashboardBinding
-import com.memeusix.clipbuddy.ui.sharing.SharingActivity
 
 class DashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
-    private lateinit var navcontroller: NavController
+    private lateinit var controller: NavController
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        navcontroller = findNavController(R.id.navHost)
+        controller = findNavController(R.id.navHost)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.homeFragment
             )
         )
-        NavigationUI.setupWithNavController(binding.toolBar, navcontroller, appBarConfiguration)
-        navcontroller.addOnDestinationChangedListener { _, destination, _ ->
+        NavigationUI.setupWithNavController(binding.toolBar, controller, appBarConfiguration)
+        controller.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.homeFragment -> {
                     binding.toolBar.subtitle = getAppVersion()

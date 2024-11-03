@@ -29,6 +29,7 @@ import androidx.media3.common.Player
 import androidx.media3.common.TrackSelectionOverride
 import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
@@ -186,9 +187,18 @@ class VideoPlayerActivity : AppCompatActivity() {
         val renderersFactory = NextRenderersFactory(this)
             .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER)
 
+        val localController = DefaultLoadControl.Builder()
+            .setBufferDurationsMs(
+                15000,
+                50000,
+                2500,
+                5000
+            ).build()
+
         player = ExoPlayer.Builder(this)
             .setTrackSelector(trackSelector)
             .setRenderersFactory(renderersFactory)
+            .setLoadControl(localController)
             .setAudioAttributes(getAudioAttributes(), true)
             .setHandleAudioBecomingNoisy(true)
             .build()

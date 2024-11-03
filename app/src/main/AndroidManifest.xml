@@ -16,23 +16,6 @@
         tools:ignore="ScopedStorage" />
 
 
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!-- Google Play filtering -->
-    <uses-feature
-        android:name="android.hardware.wifi.direct"
-        android:required="true" />
-
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -45,9 +28,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClipBuddy"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.sharing.SharingActivity"
-            android:exported="false" />
         <activity
             android:name=".ui.videoPlayer.VideoPlayerActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
