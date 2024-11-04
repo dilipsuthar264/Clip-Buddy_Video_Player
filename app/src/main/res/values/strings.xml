@@ -39,4 +39,6 @@
     <string name="size">Size</string>
     <string name="path">Path</string>
     <string name="pixels">%1$s Pixels</string>
+    <string name="share_buddy">Share Buddy</string>
+    <string name="looking_for_connection_request">Looking for Connection Request</string>
 </resources>

@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
 import androidx.annotation.OptIn
+import androidx.media3.common.Format
 import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.RecyclerView
 import com.memeusix.clipbuddy.R
 import com.memeusix.clipbuddy.databinding.DialogTracksBinding
+import java.util.Locale
 
 class AudioTrackDialog(
     val context: Context,
@@ -76,7 +78,7 @@ class AudioTrackDialog(
             (bindingAdapter as TextView).apply {
                 this.includeFontPadding = false
 
-                this.text = item.mediaTrackGroup.getFormat(0).label
+                this.text = getName(item.mediaTrackGroup.getFormat(0))
 
                 if (item.mediaTrackGroup.id == selectedItem) {
                     this.setBackgroundColor(context.getColor(R.color.colorBackgroundSecondary))
@@ -88,6 +90,18 @@ class AudioTrackDialog(
                     onItemSelected(item)
                     dismiss()
                 }
+            }
+        }
+    }
+
+    fun getName(format: Format): String {
+        return buildString {
+            if (format.label != null) {
+                append(format.label)
+            }
+            if (format.language != null && format.language != "und") {
+                append(" - ")
+                append(Locale(format.language!!).displayLanguage)
             }
         }
     }
