@@ -15,7 +15,7 @@ import io.github.anilbeesetti.nextlib.media3ext.ffdecoder.FfmpegVideoRenderer
 
 
 @UnstableApi
-open class NextRenderersFactory(context: Context) : DefaultRenderersFactory(context) {
+open class RenderersFactory(context: Context) : DefaultRenderersFactory(context) {
 
     override fun buildAudioRenderers(
         context: Context,
@@ -99,6 +99,6 @@ open class NextRenderersFactory(context: Context) : DefaultRenderersFactory(cont
     }
 
     companion object {
-        val TAG = NextRenderersFactory::class.java.name
+        val TAG = RenderersFactory::class.java.name
     }
 }

@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
 import android.media.AudioManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.GestureDetector
@@ -32,6 +31,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.SeekParameters
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.CaptionStyleCompat
@@ -85,6 +85,7 @@ class VideoPlayerActivity : AppCompatActivity() {
     private lateinit var audioTrackBtn: ImageButton
     private lateinit var subtitleTrackBtn: ImageButton
     private lateinit var screenRotationBtn: ImageButton
+    private lateinit var exoContentFrameLayout: AspectRatioFrameLayout
 
     /**
      * Fast-forward and rewind intervals (in milliseconds)
@@ -130,6 +131,7 @@ class VideoPlayerActivity : AppCompatActivity() {
         audioTrackBtn = findViewById(R.id.btnAudio)
         subtitleTrackBtn = findViewById(R.id.btnSubTitle)
         screenRotationBtn = findViewById(R.id.btnOrientation)
+        exoContentFrameLayout = findViewById(R.id.exo_content_frame)
 
 
         videoTitle = findViewById(R.id.txtVideoName)
@@ -184,35 +186,53 @@ class VideoPlayerActivity : AppCompatActivity() {
     private fun playerSetUp() {
         trackSelector = DefaultTrackSelector(applicationContext)
 
-        val renderersFactory = NextRenderersFactory(this)
+        val renderersFactory = RenderersFactory(this)
             .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER)
 
-        val localController = DefaultLoadControl.Builder()
+        val bufferController = DefaultLoadControl.Builder()
             .setBufferDurationsMs(
-                15000,
+                10000,
                 50000,
-                2500,
+                1000,
                 5000
-            ).build()
+            )
+            .build()
+
 
         player = ExoPlayer.Builder(this)
             .setTrackSelector(trackSelector)
             .setRenderersFactory(renderersFactory)
-            .setLoadControl(localController)
+            .setLoadControl(bufferController)
             .setAudioAttributes(getAudioAttributes(), true)
             .setHandleAudioBecomingNoisy(true)
+            .setSeekParameters(SeekParameters.CLOSEST_SYNC)
             .build()
 
         player.addListener(playbackListener)
+
         // Initialize player with media item
         if (viewModel.videoUri != null) {
-            val mediaItem = MediaItem.fromUri(Uri.parse(viewModel.videoUri))
-            player.setMediaItem(mediaItem)
+            val mediaSteam = MediaItem.Builder()
+                .setMediaId(viewModel.videoUri.toString())
+                .setUri(viewModel.videoUri)
+                .build()
+//            val surfaceView = SurfaceView(this@VideoPlayerActivity).apply {
+//                layoutParams = ViewGroup.LayoutParams(
+//                    ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.MATCH_PARENT
+//                )
+//            }
+//            player.setVideoSurfaceView(surfaceView)
+//            exoContentFrameLayout.addView(surfaceView, 0)
+            player.setMediaItem(
+                mediaSteam,
+                viewModel.currentPlaybackPosition ?: C.TIME_UNSET
+            )
             player.playWhenReady = viewModel.playWhenReady
             player.prepare()
-            player.seekTo(viewModel.currentPlaybackPosition)
+        } else {
+            finish()
         }
-
     }
 
     private val playbackListener = object : Player.Listener {
@@ -279,6 +299,8 @@ class VideoPlayerActivity : AppCompatActivity() {
     private fun initializePlayerView() {
         binding.playerView.player = player
         binding.playerView.setControllerAnimationEnabled(false)
+
+        binding.playerView.setShowBuffering(PlayerView.SHOW_BUFFERING_ALWAYS)
 
 
 
