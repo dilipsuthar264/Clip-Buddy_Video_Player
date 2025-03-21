@@ -1,5 +1,8 @@
 # Clip Buddy -  Video Player
 
+[![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/dilipsuthar264/Clip-Buddy_Video_Player/total?logo=github)](https://github.com/dilipsuthar264/Clip-Buddy_Video_Player/releases/latest)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/dilipsuthar264/Clip-Buddy_Video_Player?logo=github&label=GitHub&cacheSeconds=3600)](https://github.com/dilipsuthar264/Clip-Buddy_Video_Player/releases/latest)
+
 
 **Clip Buddy** is a lightweight video player app built for Android using Kotlin and XML. Leveraging the power of the **Media3 ExoPlayer** library, it follows the MVVM architecture for a clean and efficient codebase. The app features a simple and intuitive user interface, making it easy for users to navigate and enjoy their video content seamlessly.
 
